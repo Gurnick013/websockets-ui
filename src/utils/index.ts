@@ -11,3 +11,16 @@ export const responseToAllClients = (message, ws_server) =>{
     client.send(JSON.stringify(message));
   });
 };
+
+export const responseToHostClient = (ws_server, sockets, gameSettings, responseForHost, responseForClient) => {
+  ws_server.clients.forEach((client) => {
+    sockets.forEach((socket, key) => {
+      if (gameSettings.hostId === key && socket === client) {
+        client.send(responseForHost);
+      }
+      if (gameSettings.clientId === key && socket === client) {
+        client.send(responseForClient);
+      }
+    });
+  });
+};

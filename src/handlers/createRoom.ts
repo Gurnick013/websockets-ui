@@ -1,7 +1,7 @@
 import { playerFiltersById, roomFilters } from "../utils";
 import { roomPlayers } from "../db";
 
-export const createRoomHandler = (id) => {
+export const createRoom = (id) => {
   const room = roomFilters(id);
   if (!room) {
     const player = playerFiltersById(id);

@@ -21,7 +21,7 @@ ws_server.on('connection', (ws) => {
     const { type } = receivedMessage;
     const userId = randomUUID();
     console.log(receivedMessage, '-------')
-    actionType(type, receivedMessage, ws, ws_server, currentSocketID)
+    actionType(type, receivedMessage, ws, ws_server, currentSocketID, sockets)
   })
 })
 console.log(`Start static http server on the ${HTTP_PORT} port!`);
