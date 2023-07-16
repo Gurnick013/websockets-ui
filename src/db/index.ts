@@ -1,3 +1,5 @@
+import { IRoomUsers } from "../Inteface";
+
 class Player {
   name: string;
   password: string;
@@ -13,6 +15,8 @@ class Player {
 }
 
 export const players: Player[] = [];
+
+export const roomUsers: IRoomUsers[] = [];
 
 export const registerPlayer = (name: string, password: string, index: string) => {
   // if (playerExists(name)) {

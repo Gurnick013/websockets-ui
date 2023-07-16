@@ -1,18 +1,17 @@
 import { registerPlayer } from "../db";
 
-export const userRegistration = (receivedMessage, ws) => {
+export const userRegistration = (receivedMessage, ws, id) => {
   const { name, password } = JSON.parse(receivedMessage.data);
   const updatedMessage = {
     type: 'reg',
     data: JSON.stringify({
       name,
-      index: ws.index,
+      index: id,
       error: false,
       errorText: '',
     }),
     id: 0,
   };
   ws.send(JSON.stringify(updatedMessage));
-  registerPlayer(name, password, ws.index);
-  console.log(`Client ${ws.index} register: player name - ${name}`);
+  registerPlayer(name, password, id);
 }
