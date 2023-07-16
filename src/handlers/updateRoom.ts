@@ -1,25 +1,11 @@
-import { sendToAllClients } from '../utils';
-import { roomUsers } from "../db";
+import { responseToAllClients } from '../utils';
+import { roomPlayers } from "../db";
 
-export const updateRoom = (ws, userId, roomId, ws_server) => {
-
-  const rooms = {
-    roomId: roomId,
-    roomUsers: [
-      {
-        name: 'Nicki',
-        index: userId,
-      },
-    ],
-  };
-
-  roomUsers.push(rooms);
-
+export const updateRoom = (ws_server) => {
   const updatedMessage = {
     type: 'update_room',
-    data: JSON.stringify(roomUsers),
+    data: JSON.stringify(roomPlayers),
     id: 0,
   };
-  sendToAllClients(updatedMessage, ws_server);
-  console.log(`Create room ${roomId}`);
+  responseToAllClients(updatedMessage, ws_server);
 };

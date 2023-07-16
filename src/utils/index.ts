@@ -1,19 +1,12 @@
-import { players } from "../db";
+import { players, roomPlayers } from "../db";
 
-export const hasWhitespace = (str: string): boolean => {
-  return /\s/.test(str);
-}
+export const playerFiltersByName = (name) => players.filter((user) => user.name === name)[0];
 
-export const getPlayerNameByIndex = (index: string): string => {
-  const player = players.find((player) => player.index === index);
-  if (player) {
-    return player.name;
-  } else {
-    throw new Error(`Player not found with index ${index}`);
-  }
-};
+export const playerFiltersById = (id) => players.filter((user) => user.index === id)[0];
 
-export const sendToAllClients = (message, ws_server) =>{
+export const roomFilters = (id) => roomPlayers.filter((room) => room.roomId === id)[0];
+
+export const responseToAllClients = (message, ws_server) =>{
   ws_server.clients.forEach((client) => {
     client.send(JSON.stringify(message));
   });

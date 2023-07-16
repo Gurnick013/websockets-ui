@@ -1,5 +1,5 @@
 import { httpServer } from "./http_server";
-import { WebSocketServer } from "ws";
+import { WebSocket, WebSocketServer } from "ws";
 import { actionType } from "./handlers";
 import { randomUUID } from "crypto";
 
@@ -9,15 +9,19 @@ const WSS_PORT = Number(process.env.PORT || 3000);
 const server = httpServer;
 const ws_server = new WebSocketServer({ port: WSS_PORT });
 
+const sockets = new Map<number, WebSocket>();
+let sessionId: number = 0;
+
 ws_server.on('connection', (ws) => {
   console.log('Connected');
+  const currentSocketID = sessionId++;
+  sockets.set(currentSocketID, ws);
   ws.on('message', (message: string) => {
     const receivedMessage = JSON.parse(message);
     const { type } = receivedMessage;
     const userId = randomUUID();
-    const gameId = randomUUID();
     console.log(receivedMessage, '-------')
-    actionType(type, receivedMessage, ws, userId, gameId, ws_server)
+    actionType(type, receivedMessage, ws, ws_server, currentSocketID)
   })
 })
 console.log(`Start static http server on the ${HTTP_PORT} port!`);

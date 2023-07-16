@@ -1,9 +1,10 @@
 export interface IPlayer {
+  index: number;
   name: string;
-  index: string;
+  password?: string;
 }
 
-export interface IRoomUsers {
+export interface IRoomPlayers {
   roomId: number;
   roomUsers: IPlayer[];
 }
