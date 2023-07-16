@@ -1,5 +1,6 @@
 import { httpServer } from "./http_server";
 import { WebSocketServer } from "ws";
+import { actionType } from "./handlers";
 
 const HTTP_PORT = 8181;
 const WSS_PORT = Number(process.env.PORT || 3000);
@@ -11,7 +12,9 @@ wss.on('connection', (ws) => {
   console.log('Connected');
   ws.on('message', (message: string) => {
     const receivedMessage = JSON.parse(message);
+    const { type } = receivedMessage;
     console.log(receivedMessage)
+    actionType(type, receivedMessage, ws)
   })
 })
 console.log(`Start static http server on the ${HTTP_PORT} port!`);
