@@ -116,3 +116,24 @@ export const actionResponse = (x, y, indexPlayer, status) => {
     id: 0,
   });
 };
+
+export const getRandomCell = (grid) => {
+  const cell = {
+    x: Math.floor(Math.random() * 10),
+    y: Math.floor(Math.random() * 10),
+  };
+  return grid[cell.y][cell.x] !== 0 && grid[cell.y][cell.x] !== 1 ? getRandomCell(grid) : cell;
+};
+
+export const randomAttackHandler = (receivedMessage) => {
+  const { indexPlayer, gameId } = JSON.parse(receivedMessage.data);
+  const game = gameFilters(gameId);
+  const grid = game.data.filter((user) => user.indexPlayer !== indexPlayer)[0].grid;
+  const { x, y } = getRandomCell(grid);
+  const { data, id } = JSON.parse(receivedMessage);
+  return {
+    type: 'attack',
+    data: { ...data, x, y },
+    id,
+  };
+};

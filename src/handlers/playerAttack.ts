@@ -1,6 +1,7 @@
 import { responseToHostClient } from "../utils";
 import { attackHandler } from "./atackHandler";
 import { finishHandler } from "./finishHandler";
+import { updateWinners } from "./updateWinners";
 
 export const playerAttack = (ws_server, receivedMessage, ws, sockets) => {
   const { game, responses } = attackHandler(receivedMessage);
@@ -17,7 +18,7 @@ export const playerAttack = (ws_server, receivedMessage, ws, sockets) => {
       client: JSON.stringify({
         type: 'turn',
         data: JSON.stringify({
-          currentPlayer: game.turn = game.data.filter((user) => user.indexPlayer !== game.turn)[0]?.indexPlayer,
+          currentPlayer: game.data.filter((user) => user.indexPlayer !== game.turn)[0]?.indexPlayer,
         }),
         id: 0,
       }),
@@ -29,6 +30,7 @@ export const playerAttack = (ws_server, receivedMessage, ws, sockets) => {
     const response = finishHandler(receivedMessage);
     if (response) {
       responseToHostClient(ws_server, sockets, response.game, response.response, response.response);
+      updateWinners(ws_server);
     } else if (!game.isOnline && game.turn === responseTurn.clienId) {
       setTimeout(() => {
         ws.emit(

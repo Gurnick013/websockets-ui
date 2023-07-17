@@ -4,6 +4,8 @@ import { createRoom } from "./createRoom";
 import { addUserToRoom } from "./addUserToRoom";
 import { addShipsToBattlefield } from "./addShipsToBattlefield";
 import { playerAttack } from "./playerAttack";
+import { createSinglePlaying } from "./createSinglePlaying";
+import { randomAttack } from "./randomAttack";
 
 export const actionType = (type, receivedMessage, ws, ws_server, id, sockets) => {
   switch (type) {
@@ -23,6 +25,12 @@ export const actionType = (type, receivedMessage, ws, ws_server, id, sockets) =>
       break;
     case 'attack':
       playerAttack(ws_server, receivedMessage, ws, sockets);
+      break;
+    case 'randomAttack':
+      randomAttack(ws_server, ws, receivedMessage, sockets);
+      break;
+    case 'single_play':
+      createSinglePlaying(id, ws_server, sockets);
       break;
     default:
       console.log(`Unknown message type ${type}`);
