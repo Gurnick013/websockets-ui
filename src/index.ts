@@ -1,7 +1,6 @@
 import { httpServer } from "./http_server";
 import { WebSocket, WebSocketServer } from "ws";
 import { actionType } from "./handlers";
-import { randomUUID } from "crypto";
 
 const HTTP_PORT = 8181;
 const WSS_PORT = Number(process.env.PORT || 3000);
@@ -19,8 +18,6 @@ ws_server.on('connection', (ws) => {
   ws.on('message', (message: string) => {
     const receivedMessage = JSON.parse(message);
     const { type } = receivedMessage;
-    const userId = randomUUID();
-    console.log(receivedMessage, '-------')
     actionType(type, receivedMessage, ws, ws_server, currentSocketID, sockets)
   })
 })

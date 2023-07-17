@@ -1,12 +1,13 @@
 import { games } from "../db";
 
-export const createGame = (data) => {
-  const newGame = {
-    idGame: data.host,
-    hostId: data.host,
-    clientId: data.client,
+export const createGame = (initParams) => {
+  const gameParams = {
+    idGame: initParams.host,
+    hostId: initParams.host,
+    clientId: initParams.client,
+    isOnline: initParams.isOnline,
     data: [],
   };
-  games.push(newGame);
-  return newGame;
+  games.push(gameParams);
+  return gameParams;
 };

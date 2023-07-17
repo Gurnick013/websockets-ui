@@ -1,17 +1,25 @@
-import { roomFilters } from "../utils";
-import { roomPlayers } from "../db";
+import { handleRoom, responseToHostClient } from "../utils";
+import { createGame } from "./createGame";
+import { updateRoom } from "./updateRoom";
 
-export const addUserToRoom = (receivedMessage, id) => {
+export const addUserToRoom = (receivedMessage, id, ws_server, sockets) => {
   const { indexRoom } = JSON.parse(receivedMessage.data);
-    if (indexRoom !== id) {
-      const clientRoom = roomFilters(id);
-      if (clientRoom) {
-        roomPlayers.splice(roomPlayers.indexOf(clientRoom), 1);
-      }
-      const hostRoom = roomFilters(indexRoom);
-      if (hostRoom) {
-        roomPlayers.splice(roomPlayers.indexOf(hostRoom), 1);
-      }
-      return { host: indexRoom, client: id };
-    }
+  const initParams = handleRoom(indexRoom, id);
+  if (initParams) {
+    const gameSettings = createGame(initParams);
+    updateRoom(ws_server);
+    const response = {
+      host: JSON.stringify({
+        type: 'create_game',
+        data: JSON.stringify({ idGame: gameSettings.hostId, idPlayer: gameSettings.hostId }),
+        id: 0,
+      }),
+      client: JSON.stringify({
+        type: 'create_game',
+        data: JSON.stringify({ idGame: gameSettings.hostId, idPlayer: gameSettings.clientId }),
+        id: 0,
+      }),
+    };
+    responseToHostClient(ws_server, sockets, gameSettings, response.host, response.client)
+  }
 };
