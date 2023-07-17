@@ -18,6 +18,7 @@ ws_server.on('connection', (ws) => {
   ws.on('message', (message: string) => {
     const receivedMessage = JSON.parse(message);
     const { type } = receivedMessage;
+    console.log(receivedMessage)
     actionType(type, receivedMessage, ws, ws_server, currentSocketID, sockets)
   })
 })

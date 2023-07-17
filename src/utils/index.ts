@@ -125,12 +125,10 @@ export const getRandomCell = (grid) => {
   return grid[cell.y][cell.x] !== 0 && grid[cell.y][cell.x] !== 1 ? getRandomCell(grid) : cell;
 };
 
-export const randomAttackHandler = (receivedMessage) => {
-  const { indexPlayer, gameId } = JSON.parse(receivedMessage.data);
-  const game = gameFilters(gameId);
-  const grid = game.data.filter((user) => user.indexPlayer !== indexPlayer)[0].grid;
+export const randomAttackHandler = (data, id) => {
+  const game = gameFilters(data.gameId);
+  const grid = game.data.filter((user) => user.indexPlayer !== data.indexPlayer)[0].grid;
   const { x, y } = getRandomCell(grid);
-  const { data, id } = JSON.parse(receivedMessage);
   return {
     type: 'attack',
     data: { ...data, x, y },
