@@ -27,7 +27,8 @@ export const addShipsToBattlefield = (receivedMessage, ws, ws_server, sockets) =
       isOnline: gameStarted.isOnline,
     };
     responseToHostClient(ws_server, sockets, gameStarted, response.host, response.client);
-    const turnInit = gameStarted.data.map((user) => user.indexPlayer)[Math.floor(Math.random() * 2)]
+    const turnInit = gameStarted.data.map((user) => user.indexPlayer)[Math.floor(Math.random() * 2)];
+    gameStarted.turn = turnInit;
     const responseTurnInit = {
       ...response,
       host: JSON.stringify({

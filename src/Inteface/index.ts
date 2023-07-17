@@ -2,6 +2,7 @@ export interface IPlayer {
   index: number;
   name: string;
   password?: string;
+  wins?: number;
 }
 
 export interface IRoomPlayers {
@@ -9,19 +10,11 @@ export interface IRoomPlayers {
   roomUsers: IPlayer[];
 }
 
-type data =
-    | {
-  indexPlayer: number;
-  ships: IShip[];
-  grid: number[][];
-}[]
-    | [];
-
 export interface IGame {
   idGame: number;
   hostId: number;
   clientId: number;
-  data: data;
+  data: any;
   turn?: number;
   isOnline: boolean;
 }

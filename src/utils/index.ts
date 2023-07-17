@@ -89,3 +89,30 @@ export const initGame = (initGameParams, indexPlayer, ships) => {
     }
   }
 }
+
+export const getCellAround = (grid, y, x) => {
+  const battleField = [];
+  for (let i = y - 1; i <= y + 1; i++) {
+    for (let j = x - 1; j <= x + 1; j++) {
+      if (j >= 0 && j < 10 && i >= 0 && i < 10 && (i !== y || j !== x) && grid[i][j] === 0) {
+        battleField.push({ x: j, y: i });
+      }
+    }
+  }
+  return battleField;
+};
+
+export const actionResponse = (x, y, indexPlayer, status) => {
+  return JSON.stringify({
+    type: 'attack',
+    data: JSON.stringify({
+      position: {
+        x,
+        y,
+      },
+      currentPlayer: indexPlayer,
+      status: status,
+    }),
+    id: 0,
+  });
+};
